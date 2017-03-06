@@ -4,7 +4,7 @@ Set of scripts around wmutils/wmgroup/watom that form my window manager
 ## Installation
 Requires watom, wmgroup, wmutils
 Copy files into $XDG_DATA_HOME/x11/
-Modify autotag, watcher, and most likely the groups script to match your setup. The inotifybar is very specific to my system, but servers as an interesting example of what is possible, with the various \*bar scripts being ran on hooks or at the ends of scripts only, such that polling doesn't take too much CPU time. 
+Modify autotag, watcher, and most likely the groups script to match your setup. The inotifybar is very specific to my system, but serves as an interesting example of what is possible, with the various \*bar scripts being ran on hooks or at the ends of scripts only, such that polling doesn't take too much CPU time. 
 
 
 ## Configuration
