@@ -21,7 +21,7 @@ fulh=743
 
 window
 ```sh
-weechat printf '%s %s %s %s %s\n' "350" "224" "454" "261" "$id"
+weechat '%s %s %s %s' "350" "224" "454" "261"
 # Any valid sh here to emit something in the form of
-# <nameofwindow> <minx> <miny> <maxx> <maxy> "$id"
+# <nameofwindow> '%s %s %s %s' <minx> <miny> <maxx> <maxy>
 ```
