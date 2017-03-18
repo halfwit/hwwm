@@ -1,5 +1,7 @@
 #!/bin/sh
 # Requires https://github.com/wmutils
+#          https://github.com/halfwit/wmgroup
+#          https://github.com/halfwit/watom
 
 # directory of files that correlate to window names
 WIN="$XDG_CONFIG_HOME"/x11/window
