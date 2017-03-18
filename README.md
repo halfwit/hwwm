@@ -19,13 +19,9 @@ fulw=1354
 fulh=743
 ```
 
-windows/default
+window
 ```sh
-printf '%s %s %s %s %s\n' "350" "224" "454" "261" "$id"
-```
-
-windows/titlenameofprogram
-```sh
+weechat printf '%s %s %s %s %s\n' "350" "224" "454" "261" "$id"
 # Any valid sh here to emit something in the form of
-# <minx> <miny> <maxx> <maxy> "$id"
+# <nameofwindow> <minx> <miny> <maxx> <maxy> "$id"
 ```
