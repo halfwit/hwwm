@@ -19,6 +19,7 @@ install:
 	@mkdir -p ${DESTDIR}${PREFIX}/share/hwwm/
 	@for i in ${OTHER}; do \
 		sed "s|/usr/local/share/hwwm/|${DESTDIR}${PREFIX}/share/hwwm/|g" $$i > ${DESTDIR}${PREFIX}/share/hwwm/$$i; \
+		chmod 0755 ${DESTDIR}${PREFIX}/share/hwwm/$$i; \
 	done
 
 .PHONY: install
