@@ -3,20 +3,21 @@
 
 PREFIX ?= /usr/local
 
-SRC = \
+OTHER = \
 	autotag \
 	fullscreen \
 	gitbar \
 	groups \
 	groupsbar \
-	inotifybar \
 	stack \
-	watcher \
 	wshuf
 
 install:
-	@mkdir -p ${DESTDIR}${PREFIX}/share/hwwm
-	@for i in ${SRC}; do \
+	@mkdir -p ${DESTDIR}${PREFIX}/bin/
+	@cp -f hwwm ${DESTDIR}${PREFIX}/bin/hwwm
+	@cp -f inotifybar ${DESTDIR}${PREFIX}/bin/inotifybar
+	@mkdir -p ${DESTDIR}${PREFIX}/share/hwwm/
+	@for i in ${OTHER}; do \
 		sed "s|/usr/local/share/hwwm/|${DESTDIR}${PREFIX}/share/hwwm/|g" $$i > ${DESTDIR}${PREFIX}/share/hwwm/$$i; \
 	done
 

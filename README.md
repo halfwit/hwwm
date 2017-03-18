@@ -1,6 +1,15 @@
 # Halfwit's Window Manager
 Set of scripts around wmutils/wmgroup/watom that form my window manager
 
+## Startup
+
+xinitrc
+```sh
+# all things you start before
+inotifybar &
+exec hwwm
+```
+
 ## Installation
 Requires watom, wmgroup, wmutils
 PREFIX=myprefix make install
