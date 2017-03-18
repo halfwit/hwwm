@@ -5,8 +5,8 @@ Set of scripts around wmutils/wmgroup/watom that form my window manager
 Requires watom, wmgroup, wmutils
 PREFIX=myprefix make install
 
-Modify autotag, watcher, and most likely the groups script to match your setup. The inotifybar is very specific to my system, but serves as an interesting example of what is possible, with the various \*bar scripts being ran on hooks or at the ends of scripts only, such that polling doesn't take too much CPU time. 
-
+The inotifybar is very specific to my system, but serves as an interesting example of what is possible, with the various \*bar scripts being ran on hooks or at the ends of scripts only, such that polling doesn't take too much CPU time. 
+It currently works with battery and groups, but it is simple to add other items as well, see my dotfiles for examples.
 
 ## Configuration
 This presumes $XDG_CONFIG_HOME/x11 exists, with the following files: 
