@@ -7,10 +7,10 @@
 
 if watom `lsw -r` FS | xargs -n 5 wtp; then
     xprop -root -remove FS
-    "$XDG_DATA_HOME"/x11/wshuf
+    /usr/local/share/hwwm/wshuf
 else
     xprop -root -format FS 8s -set FS "$(wattr xywhi $1)"
-    . "$XDG_CONFIG_HOME"/x11/size
+    . "$XDG_CONFIG_HOME/x11/size"
     wtp "$gaps" "$gaps" "$fulw" "$fulh" "$1"
     chwso -r "$1"
 fi

@@ -9,5 +9,5 @@ chwso -r "$1"
 
 if [ $group ]; then
 	grp "$group" "$1"
-	"$XDG_DATA_HOME"/x11/groupsbar
+	/usr/local/share/hwwm/groupsbar
 fi

@@ -1,5 +1,5 @@
 #!/bin/sh
-DIR=$XDG_DATA_HOME/x11
+DIR=/usr/local/share/hwwm
 
 wew | while read -r ev; do
 	wid=`echo "$ev" | sed 's/.*://'`
