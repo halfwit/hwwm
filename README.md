@@ -1,6 +1,11 @@
 # Halfwit's Window Manager
 Set of scripts around wmutils/wmgroup/watom that form my window manager
 
+## NOTE:
+For this to work as expected, everything you use must have a dependable title.
+This is difficult in certain browsers, for example Surf.
+I set the window title for anything I invoke with shell; in st it looks like this: `st -t mytitle myprogram`.
+
 ## Startup
 
 xinitrc
