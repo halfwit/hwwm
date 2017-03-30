@@ -3,9 +3,8 @@
 WIN=$XDG_CONFIG_HOME/x11/tags
 
 focus="`awk -v r="$(watom "$1" WM_NAME)" -v s="$(watom $1 WM_CLASS)" '$0 ~  r || $0 ~ s {print $2}' "$WIN"`"
-test focus = true && wtf "$focus"
+test focus = true && wtf "$focus" && chwso "$1"
 group="`awk -v r="$(watom "$1" WM_NAME)" -v s="$(watom $1 WM_CLASS)" '$0 ~ r || $0 ~ s {print $3}' "$WIN"`"
-chwso -r "$1"
 
 if [ $group ]; then
 	grp "$group" "$1"
