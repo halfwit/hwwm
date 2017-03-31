@@ -3,6 +3,14 @@
 statusdir="$XDG_RUNTIME_DIR/statusbar"
 mkdir -pm0700 "$statusdir"
 
+trap reload USR1
+
+reload() {	
+	kill -INT $$
+	battery &
+	barrun	
+}
+
 battery() {
 	while :; do
 		read -r level < /sys/class/power_supply/BAT0/capacity
@@ -24,8 +32,12 @@ battery() {
 
 battery &
 
+barrun() {
 inotifywait -qme close_write --format %f "$statusdir" | while read -r file; do
 	if read -r -- "$file" < "$statusdir/$file"; then
 		printf -- ' %s %%{c} %s %%{r} %s%s%s \n' "$batt" "$groups" "$rss" "$git" "$media"
 	fi
 done | lemonbar -F '#282828' -d -b -f "DejaVu Book:size=9.5" -f "Symbola:size=9.5" -f "FreeSans:size=9.5"
+}
+
+barrun
