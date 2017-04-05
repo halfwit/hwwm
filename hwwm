@@ -3,18 +3,27 @@ DIR=/usr/local/share/hwwm
 
 wew | while read -r ev; do
 	wid=`echo "$ev" | sed 's/.*://'`
-    case "$ev" in
-		18*) $DIR/wshuf | xargs -n 5 wtp
-			wtf `lsw | tail -n1`
-			$DIR/groupsbar           ;;
-		19*) $DIR/wshuf | xargs -n 5 wtp
-			$DIR/autotag "$wid"
-			wtf "$wid"
-			$DIR/groupsbar           ;;
-		17*) wtf `lsw | tail -n1`
-			if watom `lsw -r` FS | grep "$wid"; then
-				xprop -root -remove FS
+	fullscreen="$(watom `lsw -r` FS 2>/dev/null)"
+	case "$ev" in
+		# Unmap
+		18*)	if test -z $fullscreen; then 
 				$DIR/wshuf | xargs -n 5 wtp
+				wtf `lsw | tail -n1`
+			fi
+			$DIR/groupsbar           ;;
+		# Map
+		19*)	if test -z $fullscreen; then
+				$DIR/wshuf | xargs -n 5 wtp
+				$DIR/autotag "$wid"
+				wtf "$wid"
+			fi
+			$DIR/groupsbar           ;;
+		# Destroy
+		17*)	wtf `lsw | tail -n1`
+			if test -z $fullscreen; then
+				$DIR/wshuf | xargs -n 5 wtp
+			else
+				xprop -root -remove FS
 			fi
 			$DIR/groupsbar           ;;
 	esac
