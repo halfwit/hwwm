@@ -8,9 +8,8 @@ WIN="$XDG_CONFIG_HOME"/x11/window
 
 winsize() {
 	while read -r id; do
-		# Find our command to run in our file, else set it as default
-		cmd="`awk -v r="$(watom $id WM_NAME | awk '{print $1}')" -v s="$(watom $id WM_CLASS)" '$0 ~ r || $0 ~ s {$1=""; print}' "$WIN"`"
-		test -z "$cmd" && cmd="`awk '/default/{$1=""; print}' "$WIN"`"
+		name="`xprop -id "$id" | awk '/WM_CLASS/{print $NF}' | tr -d '"' `" 
+		cmd="`awk -v r="$name" '$0 ~ r {err=1; $1=""; print} END {exit err}' "$WIN" && awk '/default/{$1=""; print}' "$WIN"`"
 		printf '%s %s\n' "`eval "$cmd"`" "$id"
 	done
 }
