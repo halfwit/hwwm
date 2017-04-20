@@ -7,14 +7,14 @@ push=0
 pull=0
 
 while IFS="⇄↑↓" read -r input; do
-	case $input in
-		*⇄*) comm=`echo $input | tr -cd [:digit:]` ;;
-		*↑*) push=`echo $input | tr -cd [:digit:]` ;;
-		*↓*) pull=`echo $input | tr -cd [:digit:]` ;;
+	case "$input" in
+		*⇄*) comm=`echo "$input" | tr -cd [:digit:]` ;;
+		*↑*) push=`echo "$input" | tr -cd [:digit:]` ;;
+		*↓*) pull=`echo "$input" | tr -cd [:digit:]` ;;
 	esac		
 done < $GITBAR
 
-case $1 in
+case "$1" in
 	commit) comm=`commit wc` ;;
 	pull)   pull=`pull wc`   ;;
 	push)   push=`push wc`   ;;
