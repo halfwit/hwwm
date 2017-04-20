@@ -8,9 +8,9 @@ pull=0
 
 while IFS="⇄↑↓" read -r input; do
 	case "$input" in
-		*⇄*) comm=`echo "$input" | tr -cd [:digit:]` ;;
 		*↑*) push=`echo "$input" | tr -cd [:digit:]` ;;
 		*↓*) pull=`echo "$input" | tr -cd [:digit:]` ;;
+		*⇄*) comm=`echo "$input" | tr -cd [:digit:]` ;;
 	esac		
 done < $GITBAR
 
