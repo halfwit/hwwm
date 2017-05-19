@@ -2,11 +2,9 @@
 
 WIN=$XDG_CONFIG_HOME/x11/tags
 
-focus="`awk -v r="$(watom "$1" WM_NAME)" -v s="$(watom $1 WM_CLASS)" '$0 ~  r || $0 ~ s {print $2}' "$WIN"`"
-test focus = true && wtf "$focus" && chwso "$1"
-group="`awk -v r="$(watom "$1" WM_NAME)" -v s="$(watom $1 WM_CLASS)" '$0 ~ r || $0 ~ s {print $3}' "$WIN"`"
-
-if [ $group ]; then
-	grp "$group" "$1"
+name="`xprop -id "$1" | awk '/WM_CLASS/{print $NF}' | tr -d '"' `"
+awk -v r="$name" '$0 ~ r {print $2, $3}' "$WIN" | while read -r flag tag; do
+	test "$flag" = true && wtf "$flag" && chwso "$1"
+	grp "$tag" "$1"
 	/usr/local/share/hwwm/groupsbar
-fi
+done
