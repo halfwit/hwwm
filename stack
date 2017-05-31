@@ -1,40 +1,12 @@
-#!/usr/bin/env bash
-# Handler to push window to top of stack
+#!/bin/sh
+# Sadly, we currently have to run lsgrp twice here - look into fixing this
 
-unset MAPPED
+# We want to get "$1" to match wname if we are toggling an unmapped window on
+WIN="`lsgrp 2 | tail -n 1`"
+wattr m "$WIN" || set -- "$(wname $WIN)"
 
-# If we call a tab by name
-if [[ $1 ]]; then
-
-  lsgrp 2 | xargs mapw -u
-  
-  while read -r id; do
-    if watom "$id" WM_NAME | grep -i "$1"; then
-      MAPPED="$id"
-    fi
-  done < <(lsw -a)
-  
-  if [[ $MAPPED ]]; then  
-    chwso -r "$MAPPED"
-    mapw  -m "$MAPPED"
-  fi
-
-# Toggle group visibilty
-else
-  
-  while read -r id; do
-    if wattr m "$id"; then
-      MAPPED="$id"
-    fi
-    mapw -u "$id"
-  done < <(lsgrp 2)
-
-  # Toggle off
-  if [[ $MAPPED ]]; then
-    chwso -r "$MAPPED"
-  else
-    # Toggle on top window in stack
-    mapw -m "$(lsgrp 2 | tail -n 1)"
-  fi
-
-fi
+lsgrp 2 | while read -r id; do
+	# Test if we're sent in name, map if match
+	test "$1" = "$(wname $id)" && mapw -m "$id" || mapw -u "$id"
+		
+done
