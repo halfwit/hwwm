@@ -17,13 +17,13 @@ battery() {
 		if [ $level -lt 80 ]; then
 			printf ' %s%%\n' "$level" > "$statusdir/batt"
 		else
-			printf "" > "$statusdir/batt"
+			> "$statusdir/batt"
 		fi
 		read -r rss < ~/local/cache/rss/count
 		if [ $rss -gt 0 ]; then
 			printf '  %s\n' "$rss " > "$statusdir/rss"
 		else
-			printf "" > "$statusdir/rss" 
+			> "$statusdir/rss" 
 		fi
 		sleep 60
 

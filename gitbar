@@ -45,5 +45,5 @@ fi
 if [ $check -eq 1 ]; then
 	printf '%s\n' " [$push$pull$comm]" > "$GITBAR"
 else
-	printf '%s\n' "" > "$GITBAR"
+	> "$GITBAR"
 fi
