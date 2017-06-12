@@ -20,11 +20,8 @@ wew | while read -r ev; do
 			$DIR/groupsbar           ;;
 		# Destroy
 		17*)	wtf `lsw | tail -n1`
-			if test -z $fullscreen; then
-				$DIR/wshuf | xargs -n 5 wtp
-			else
-				xprop -root -remove FS
-			fi
+			test -z $fullscreen || xprop -root -remove FS
+			$DIR/wshuf | xargs -n 5 wtp
 			$DIR/groupsbar           ;;
 	esac
 done
