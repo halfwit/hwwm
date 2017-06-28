@@ -2,6 +2,7 @@
 # Requires https://github.com/wmutils
 #          https://github.com/halfwit/wmgroup
 #          https://github.com/halfwit/watom
+#          https://github.com/halfwit/binpack	
 
 # directory of files that correlate to window names
 WIN="$XDG_CONFIG_HOME"/x11/window
@@ -14,11 +15,14 @@ winsize() {
 	done
 }
 
-## Main ##
-# window dimensions and gap
+## Main
+# Don't run if we're fullscreen
 if watom `lsw -r` FS 2>/dev/null; then
 	exit 0
 fi
 
-. "$XDG_CONFIG_HOME"/x11/size && [ ! $width ] && [ ! $heigh ] && exit 1
+# window dimensions and gap
+. "$XDG_CONFIG_HOME"/x11/size
+
+# run the pipe
 lsw | winsize | binpack -x "$width" -y "$heigh" -g "$gaps"
