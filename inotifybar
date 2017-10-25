@@ -19,14 +19,7 @@ battery() {
 		else
 			> "$statusdir/batt"
 		fi
-		read -r rss < ~/local/cache/rss/count
-		if [ $rss -gt 0 ]; then
-			printf '  %s\n' "$rss " > "$statusdir/rss"
-		else
-			> "$statusdir/rss" 
-		fi
 		sleep 60
-
 	done
 }
 
