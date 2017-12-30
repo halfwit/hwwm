@@ -1,12 +1,19 @@
 #!/bin/sh
 # Sadly, we currently have to run lsgrp twice here - look into fixing this
-
 # We want to get "$1" to match wname if we are toggling an unmapped window on
-WIN="`lsgrp 2 | tail -n 1`"
-wattr m "$WIN" || set -- "$(wname $WIN)"
+
+w_name() {
+	xprop -id "$1" | sed -n -e 's/_NET_WM_NAME(UTF8_STRING) = //p' | tr -d '"'
+}
+
+WIN="$(lsgrp 2 | tail -n 1)"
+wattr m "$WIN" || set -- "$(w_name "$WIN")"
 
 lsgrp 2 | while read -r id; do
 	# Test if we're sent in name, map if match
-	test "$1" = "$(wname $id)" && mapw -m "$id" || mapw -u "$id"
-		
+	if test "$1" = "$(w_name "$id")"; then
+		mapw -m "$id"
+	else
+		mapw -u "$id"
+	fi
 done
