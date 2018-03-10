@@ -1,10 +1,15 @@
 #!/bin/sh
 DIR=/usr/local/share/hwwm
 
-wew | while read -r ev; do
+FOCUS_MASK=2097152
+wew -m $FOCUS_MASK | while read -r ev; do
 	wid=`echo "$ev" | sed 's/.*://'`
 	fullscreen="$(watom `lsw -r` FS 2>/dev/null)"
 	case "$ev" in
+		# Focus in
+		9*)	chwb -s 1 -c '#3c3836' "${ev#*:}" ;;
+		# Focus out
+		10*) chwb -s 0 "${ev#*:}" ;;
 		# Unmap
 		18*)	if test -z $fullscreen; then 
 				$DIR/wshuf | xargs -n 5 wtp
