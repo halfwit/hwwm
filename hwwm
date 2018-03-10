@@ -7,9 +7,9 @@ wew -m $FOCUS_MASK | while read -r ev; do
 	fullscreen="$(watom `lsw -r` FS 2>/dev/null)"
 	case "$ev" in
 		# Focus in
-		9*)	chwb -s 1 -c '#3c3836' "${ev#*:}" ;;
+		9*)	chwb -s 1 -c 3c3836 "$wid" ;;
 		# Focus out
-		10*) chwb -s 0 "${ev#*:}" ;;
+		10*) chwb -s 0 "$wid" ;;
 		# Unmap
 		18*)	if test -z $fullscreen; then 
 				$DIR/wshuf | xargs -n 5 wtp
