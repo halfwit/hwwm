@@ -25,10 +25,17 @@ battery() {
 
 battery &
 
+# Initialize some data
+test -f "$statusdir/rss" && read -r rss < "$statusdir/rss"
+test -f "$statusdir/git" && read -r git < "$statusdir/git"
+test -f "$statusdir/media" && read -r media < "$statusdir/media"
+
 barrun() {
 inotifywait -qme close_write --format %f "$statusdir" | while read -r file; do
 	if read -r -- "$file" < "$statusdir/$file"; then
 		printf -- ' %s %%{c} %s %%{r} %s%s%s \n' "$batt" "$groups" "$rss" "$git" "$media"
+		# We inexplicably need to force a redraw here
+		/usr/local/share/hwwm/wshuf | xargs -n 5 wtp
 	fi
 done | lemonbar -F '#282828' -B '#787878' -d -b -f "DejaVu Book:size=9.5" -f "Symbola:size=9.5" -f "FreeSans:size=9.5"
 }
