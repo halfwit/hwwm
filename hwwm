@@ -1,7 +1,7 @@
 #!/bin/sh
 DIR=/usr/local/share/hwwm
 # Colors
-barcolor=$(awk -f "$XDG_CONFIG_HOME/x11/Xresources" '/color4/{print $NF}')"
+barcolor="$(awk -f "$XDG_CONFIG_HOME/x11/Xresources" '/color4/{print $NF}')"
 
 FOCUS_MASK=2097152
 wew -m $FOCUS_MASK | while read -r ev; do
