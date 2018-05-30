@@ -3,6 +3,7 @@
 WIN=$XDG_CONFIG_HOME/x11/tags
 
 name="`xprop -id "$1" | awk '/WM_CLASS/{print $NF}' | tr -d '"' `"
+test -z $name && exit 0
 awk -v r="$name" '$0 ~ r {print $2, $3}' "$WIN" | while read -r flag tag; do
 	if test "$flag" = true; then
 		wtf "$flag"
