@@ -37,7 +37,7 @@ inotifywait -qme close_write --format %f "$statusdir" | while read -r file; do
 		# We inexplicably need to force a redraw here
 		/usr/local/share/hwwm/wshuf | xargs -n 5 wtp
 	fi
-done | lemonbar -F '#282828' -B '#FFFFFF' -d -b -f "DejaVu Book:size=9.5" -f "Symbola:size=9.5" -f "FreeSans:size=9.5"
+done | lemonbar -F '#000000' -B '#8f3f71' -d -b -f "DejaVu Book:size=9.5" -f "Symbola:size=9.5" -f "FreeSans:size=9.5"
 }
 
 barrun
