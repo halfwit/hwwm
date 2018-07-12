@@ -1,4 +1,5 @@
 #!/bin/sh
+#TODO: This isn't part of hwwm at all, this should be in a seperate repository
 # Full credit to @Earnestly.
 statusdir="$XDG_RUNTIME_DIR/statusbar"
 mkdir -pm0700 "$statusdir"
@@ -37,7 +38,7 @@ inotifywait -qme close_write --format %f "$statusdir" | while read -r file; do
 		# We inexplicably need to force a redraw here
 		/usr/local/share/hwwm/wshuf | xargs -n 5 wtp
 	fi
-done | lemonbar -F '#000000' -B '#b8bb26' -d -b -f "DejaVu Book:size=9.5" -f "Symbola:size=9.5" -f "FreeSans:size=9.5"
+done | lemonbar -F '#000000' -B '#FFFFFF' -d -b -f "DejaVu Book:size=9.5" -f "Symbola:size=9.5" -f "FreeSans:size=9.5"
 }
 
 barrun
