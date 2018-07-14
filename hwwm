@@ -1,7 +1,8 @@
 #!/bin/sh
 DIR=/usr/local/share/hwwm
 # Colors
-barcolor="$(awk -f "$XDG_CONFIG_HOME/x11/Xresources" '/color4/{print $NF}')"
+highlight="$(xrdb -query | awk '/desktop/{print $NF}' | sed 's/#//')"
+normal="$(xrdb -query | awk '/background/{print $NF}' | sed 's/#//')"
 
 FOCUS_MASK=2097152
 wew -m $FOCUS_MASK | while read -r ev; do
@@ -11,9 +12,9 @@ wew -m $FOCUS_MASK | while read -r ev; do
 	fullscreen="$(watom `lsw -r` FS 2>/dev/null)"
 	case "$ev" in
 		# Focus in
-		9*)	chwb -s 2 -c 458588 "$wid" ;;
+		9*)	chwb -s 2 -c "$highlight" "$wid" ;;
 		# Focus out
-		10*) chwb -s 2 -c 3c3836 "$wid" ;;
+		10*) chwb -s 2 -c "$normal" "$wid" ;;
 		# Unmap
 		18*)	if test -z $fullscreen; then 
 				$DIR/wshuf | xargs -n 5 wtp
