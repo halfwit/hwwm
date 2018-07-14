@@ -1,14 +1,16 @@
 #!/bin/sh
 DIR=/usr/local/share/hwwm
+
 # Colors
 highlight="$(xrdb -query | awk '/desktop/{print $NF}' | sed 's/#//')"
-normal="$(xrdb -query | awk '/background/{print $NF}' | sed 's/#//')"
+normal="$(xrdb -query | awk '/color8/{print $NF}' | sed 's/#//')"
 
+# TODO: Currently breaks when toggling windows off of fullscreen
 FOCUS_MASK=2097152
 wew -m $FOCUS_MASK | while read -r ev; do
 	wid=`echo "$ev" | sed 's/.*://'`
 	# Short circuit on lemonbar
-	test $(wname $wid) = "bar" && continue 
+	test "$(wname $wid)" = "bar" && continue 
 	fullscreen="$(watom `lsw -r` FS 2>/dev/null)"
 	case "$ev" in
 		# Focus in
