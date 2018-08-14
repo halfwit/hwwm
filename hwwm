@@ -1,5 +1,19 @@
 #!/bin/sh
 DIR=/usr/local/share/hwwm
+BACKGROUND="$XDG_CONFIG_HOME"/x11/background
+
+# Update the database
+xrdb -merge "$XDG_CONFIG_HOME"/x11/Xresources
+
+# Set background image
+hsetroot -center "$BACKGROUND" -tint "$(xrdb -query | awk '/desktop/{print $NF}')"
+
+# Key watcher
+sxhkd -m -1 &
+
+# Statusbar
+inotifybar &
+
 
 # Colors
 highlight="$(xrdb -query | awk '/desktop/{print $NF}' | sed 's/#//')"
