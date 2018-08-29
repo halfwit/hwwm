@@ -8,38 +8,25 @@ trap reload USR1
 
 reload() {	
 	kill -INT $$
-	battery &
-	barrun	
+	exec /usr/local/bin/inotifybar
 }
 
-battery() {
-	while :; do
-		read -r level < /sys/class/power_supply/BAT0/capacity
-		if [ $level -lt 80 ]; then
-			printf ' %s%%\n' "$level" > "$statusdir/batt"
-		else
-			> "$statusdir/batt"
-		fi
-		sleep 60
-	done
-}
-
-battery &
-
+## These are all set by external processes. Time, batt, and rss are updated through cron jobs. Git is updated through git hooks, and media is updated through mpv/mpg123/ogg123 hooks.
 # Initialize some data
 test -f "$statusdir/rss" && read -r rss < "$statusdir/rss"
 test -f "$statusdir/git" && read -r git < "$statusdir/git"
 test -f "$statusdir/media" && read -r media < "$statusdir/media"
+test -f "$statusdir/time" && read -r time < "$statusdir/time"
+test -f "$statusdir/batt" && read -r batt < "$statusdir/batt"
 
 # This will fail unless you have something set for *desktop in your Xresources!
-
 barrun() {
 	background="$(xrdb -query | awk '/background/{print $NF}')"
 	foreground="$(xrdb -query | awk '/desktop/{print $NF}')"
 	inotifywait -qme close_write --format %f "$statusdir" | while read -r file; do
 		if read -r -- "$file" < "$statusdir/$file"; then
-			printf -- ' %s %%{c} %s %%{r} %s%s%s \n' "$batt" "$groups" "$rss" "$git" "$media"
-			# We inexplicably need to force a redraw here
+			printf -- ' %s %s %%{c} %s %%{r} %s%s%s \n' "$time" "$batt" "$groups" "$rss" "$git" "$media"
+			# We explicitely need to force a redraw here, since we ignore
 			/usr/local/share/hwwm/wshuf | xargs -n 5 wtp
 		fi
 	done | lemonbar -F "$foreground" -B "$background" -d -b -f "DejaVu Book:size=10.5" -f "Symbola:size=9.5" -f "FreeSans:size=9.5"
