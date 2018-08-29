@@ -1,6 +1,6 @@
 #!/bin/sh
 DIR=/usr/local/share/hwwm
-BACKGROUND="$XDG_CONFIG_HOME"/x11/background
+BACKGROUND="$XDG_CONFIG_HOME"/x11/background.png
 
 # Update the database
 xrdb -merge "$XDG_CONFIG_HOME"/x11/Xresources
