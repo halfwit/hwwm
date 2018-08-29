@@ -8,19 +8,21 @@ trap reload USR1
 
 reload() {	
 	kill -INT $$
-	exec /usr/local/bin/inotifybar
+	barrun
 }
 
-## These are all set by external processes. Time, batt, and rss are updated through cron jobs. Git is updated through git hooks, and media is updated through mpv/mpg123/ogg123 hooks.
-# Initialize some data
-test -f "$statusdir/rss" && read -r rss < "$statusdir/rss"
-test -f "$statusdir/git" && read -r git < "$statusdir/git"
-test -f "$statusdir/media" && read -r media < "$statusdir/media"
-test -f "$statusdir/time" && read -r time < "$statusdir/time"
-test -f "$statusdir/batt" && read -r batt < "$statusdir/batt"
+barrun() {
+
+	## These are all set by external processes. Time, batt, and rss are updated through cron jobs. Git is updated through git hooks, and media is updated through mpv/mpg123/ogg123 hooks.
+	# Initialize some data
+	test -f "$statusdir/rss" && read -r rss < "$statusdir/rss"
+	test -f "$statusdir/git" && read -r git < "$statusdir/git"
+	test -f "$statusdir/media" && read -r media < "$statusdir/media"
+	test -f "$statusdir/time" && read -r time < "$statusdir/time"
+	test -f "$statusdir/batt" && read -r batt < "$statusdir/batt"
+
 
 # This will fail unless you have something set for *desktop in your Xresources!
-barrun() {
 	background="$(xrdb -query | awk '/background/{print $NF}')"
 	foreground="$(xrdb -query | awk '/desktop/{print $NF}')"
 	inotifywait -qme close_write --format %f "$statusdir" | while read -r file; do
