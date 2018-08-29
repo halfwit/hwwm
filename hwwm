@@ -14,7 +14,6 @@ sxhkd -m -1 &
 # Statusbar
 inotifybar &
 
-
 # Colors
 highlight="$(xrdb -query | awk '/desktop/{print $NF}' | sed 's/#//')"
 normal="$(xrdb -query | awk '/color8/{print $NF}' | sed 's/#//')"
@@ -27,27 +26,35 @@ wew -m $FOCUS_MASK | while read -r ev; do
 	test "$(wname $wid)" = "bar" && continue 
 	fullscreen="$(watom `lsw -r` FS 2>/dev/null)"
 	case "$ev" in
-		# Focus in
-		9*)	chwb -s 2 -c "$highlight" "$wid" ;;
-		# Focus out
-		10*) chwb -s 2 -c "$normal" "$wid" ;;
-		# Unmap
-		18*)	if test -z $fullscreen; then 
-				$DIR/wshuf | xargs -n 5 wtp
-				wtf `lsw | tail -n1`
-			fi
-			$DIR/groupsbar           ;;
-		# Map
-		19*)	if test -z $fullscreen; then
-				$DIR/wshuf | xargs -n 5 wtp
-				$DIR/autotag "$wid"
-				wtf "$wid"
-			fi
-			$DIR/groupsbar           ;;
-		# Destroy
-		17*)	wtf `lsw | tail -n1`
-			test -z $fullscreen || xprop -root -remove FS
+	# Focus in
+	9*)	chwb -s 2 -c "$highlight" "$wid" ;;
+	# Focus out
+	10*) chwb -s 2 -c "$normal" "$wid" ;;
+	# Unmap
+	18*) if test -z $fullscreen; then 
 			$DIR/wshuf | xargs -n 5 wtp
-			$DIR/groupsbar           ;;
+		fi
+		wtf `lsw | tail -n1`
+		$DIR/groupsbar           ;;
+	# Map
+	19*) if test -z $fullscreen; then
+			$DIR/wshuf | xargs -n 5 wtp
+			$DIR/autotag "$wid"
+		fi
+		wtf "$wid"
+		$DIR/groupsbar           ;;
+	# Destroy
+	17*) if test -z $fullscreen; then 
+			$DIR/wshuf | xargs -n 5 wtp
+			$wtf `lsw | tail -n1`
+		else
+			case "$fullscreen" in
+			*$wid) 
+				xprop -root -remove FS 
+				$DIR/wshuf | xargs -n 5 wtp
+				wtf `lsw | tail -n1` ;;
+			esac
+		fi
+		$DIR/groupsbar           ;;
 	esac
 done

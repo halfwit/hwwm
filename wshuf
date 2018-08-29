@@ -17,9 +17,7 @@ winsize() {
 
 ## Main
 # Don't run if we're fullscreen
-if watom `lsw -r` FS 2>/dev/null; then
-	exit 0
-fi
+watom `lsw -r` FS >/dev/null 2>&1 && exit 0
 
 # window dimensions and gap
 . "$XDG_CONFIG_HOME"/x11/size
