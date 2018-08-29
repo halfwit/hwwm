@@ -28,22 +28,22 @@ wew -m $FOCUS_MASK | while read -r ev; do
 	# Focus in
 	9*)	chwb -s 2 -c "$highlight" "$wid" ;;
 	# Focus out
-	10*) chwb -s 2 -c "$normal" "$wid" ;;
+	10*)	chwb -s 2 -c "$normal" "$wid" ;;
 	# Unmap
-	18*) if test -z $fullscreen; then 
+	18*)	if test -z $fullscreen; then 
 			$DIR/wshuf | xargs -n 5 wtp
 		fi
 		wtf `lsw | tail -n1`
 		$DIR/groupsbar           ;;
 	# Map
-	19*) if test -z $fullscreen; then
+	19*)	if test -z $fullscreen; then
 			$DIR/wshuf | xargs -n 5 wtp
 			$DIR/autotag "$wid"
 		fi
 		wtf "$wid"
 		$DIR/groupsbar           ;;
 	# Destroy
-	17*) if test -z $fullscreen; then 
+	17*)	if test -z $fullscreen; then 
 			$DIR/wshuf | xargs -n 5 wtp
 			$wtf `lsw | tail -n1`
 		else
