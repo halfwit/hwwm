@@ -22,7 +22,7 @@ barrun() {
 	test -f "$statusdir/batt" && read -r batt < "$statusdir/batt"
 
 
-# This will fail unless you have something set for *desktop in your Xresources!
+	# This will fail unless you have something set for *desktop in your Xresources!
 	background="$(xrdb -query | awk '/background/{print $NF}')"
 	foreground="$(xrdb -query | awk '/desktop/{print $NF}')"
 	inotifywait -qme close_write --format %f "$statusdir" | while read -r file; do
