@@ -5,11 +5,11 @@ GITBAR="$XDG_RUNTIME_DIR/statusbar/git"
 append() {
 	case "$1" in
 		0) 							   ;;
-		[0-9]*) printf '%s\n' "[$1$2]" ;;
+		[0-9]*) printf '%s\n' "$1$2" ;;
 	esac
 }
 
-printf '%s%s%s\n' \
+printf '[%s%s%s]\n' \
 	"$(append "$(wc -l < "$XDG_DATA_DIR/pushes")" "↑")" \
 	"$(append "$(wc -l < "$XDG_DATA_DIR/pulls")" "↓")" \
 	"$(append "$(wc -l < "$XDG_DATA_DIR/commits")" "⇄")" \
