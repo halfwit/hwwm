@@ -12,6 +12,7 @@ hsetroot -center "$BACKGROUND" -tint "$(xrdb -query | awk '/desktop/{print $NF}'
 sxhkd -m -1 &
 
 # Statusbar
+updatecommit &
 inotifybar &
 
 # Colors
