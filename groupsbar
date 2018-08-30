@@ -4,10 +4,16 @@
 panels=6
 declare -a item
 
+# This is where webkit browsers currently break on the bar
+# lsgrp 2 | tail -n1 gets something called `WebKitProcess` which is unmapped
 for (( i = 1; i <= $panels; i++ )); do
-  groups=$(lsgrp "$i")
+  groups=$(lsgrp "$i" | tail -n1)
+  if test "$groups" = "WebKitProcess"; then
+    xprop -id "$groups" -remove _WM_GROUP
+    groups="$(lsgrp 2 | tail -n1)"
+  fi
   if [[ $groups != "" ]]; then
-    if wattr m "$(lsgrp "$i" | tail -n 1)"; then
+    if wattr m "$groups"; then
       item[$i]="◉"
     else
       item[$i]="◍"

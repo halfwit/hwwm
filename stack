@@ -1,18 +1,30 @@
 #!/bin/sh
-# Sadly, we currently have to run lsgrp twice here - look into fixing this
-# We want to get "$1" to match wname if we are toggling an unmapped window on
 
-w_name() {
+get_name() {
 	xprop -id "$1" | sed -n -e 's/_NET_WM_NAME(UTF8_STRING) = //p' | tr -d '"'
 }
 
-WIN="$(lsgrp 2 | tail -n 1)"
-wattr m "$WIN" || set -- "$(w_name "$WIN")"
+# Clean up group 2 which could have errant WebKitProcess or blank strings
+clean_group() {
+	lsgrp 2 | while read -r id; do
+	case "_$(get_name "$id")" in
+		_WebKitWebProcess*) xprop -id "$id" -remove _WM_GROUP ;;
+		_)                  killw "$id" ;;
+	esac
+	done
+}
+
+get_win() {
+	clean_group
+	lsgrp 2 | tail -n1
+}
+
+# Make sure we have something useful passed in
+test -z "$1" && set -- "$(get_name `get_win`)"
 
 lsgrp 2 | while read -r id; do
-	# Test if we're sent in name, map if match
-	if test "$1" = "$(w_name "$id")"; then
-		mapw -m "$id"
+	if test "$@" = "$(get_name "$id")"; then
+		mapw -t "$id"
 	else
 		mapw -u "$id"
 	fi
