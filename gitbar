@@ -16,7 +16,7 @@ stringify() {
 }
 
 tmp="$(stringify)"
-case "$tmp" in
-	\[\]) echo "" > "$GITBAR"             ;;
+case "_$tmp" in
+	_) echo "" > "$GITBAR"             ;;
 	*) printf '[%s]\n' "$tmp" > "$GITBAR" ;;
 esac
