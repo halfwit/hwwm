@@ -15,4 +15,4 @@ printf '[%s%s%s]\n' \
 	"$(append "$(wc -l < "$XDG_DATA_DIR/commits")" "⇄")" \
 > "$XDG_RUNTIME_DIR/statusbar/git"
 
-sed 's/\[\]//' "$XDG_RUNTIME_DIR/statusbar/git"
+sed -i 's/\[\]//' "$XDG_RUNTIME_DIR/statusbar/git"
