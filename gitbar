@@ -9,10 +9,14 @@ append() {
 	esac
 }
 
-printf '[%s%s%s]\n' \
-	"$(append "$(wc -l < "$XDG_DATA_DIR/pushes")" "↑")" \
-	"$(append "$(wc -l < "$XDG_DATA_DIR/pulls")" "↓")" \
-	"$(append "$(wc -l < "$XDG_DATA_DIR/commits")" "⇄")" \
-> "$XDG_RUNTIME_DIR/statusbar/git"
+stringify() {
+	append "$(wc -l < "$XDG_DATA_DIR/pushes")" "↑"
+	append "$(wc -l < "$XDG_DATA_DIR/pulls")" "↓"
+	append "$(wc -l < "$XDG_DATA_DIR/commits")" "⇄"
+}
 
-sed 's/\[\]//' "$XDG_RUNTIME_DIR/statusbar/git" > "$XDG_RUNTIME_DIR/statusbar/git"
+tmp="$(stringify)"
+case "$tmp" in
+	\[\]) echo -n > "$GITBAR"             ;;
+	*) printf '[%s]\n' "$tmp" > "$GITBAR" ;;
+esac
