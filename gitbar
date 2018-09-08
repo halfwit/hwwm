@@ -15,8 +15,9 @@ stringify() {
 	append "$(wc -l < "$XDG_DATA_DIR/commits")" "⇄"
 }
 
-tmp="$(stringify)"
+# It's messy, but it removes newlines from the three file outputs
+tmp="$(stringify | tr -d '\n')"
 case "_$tmp" in
-	_) echo "" > "$GITBAR"             ;;
+	_) echo "" > "$GITBAR"              ;;
 	*) printf '[%s]\n' "$tmp" > "$GITBAR" ;;
 esac
