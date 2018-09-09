@@ -7,6 +7,9 @@ For this to work as expected, everything you use must have a dependable title.
 This is difficult in certain browsers, for example Surf.
 I set the window class for anything I invoke with shell; in st it looks like this: `st -c "mytitle" -e myprogram`.
 
+### CAUTION:
+This will break in mysterious and wonderful ways. Welcome to X11!
+
 ## Startup
 
 xinitrc
