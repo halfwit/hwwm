@@ -23,4 +23,4 @@ watom `lsw -r` FS >/dev/null 2>&1 && exit 0
 . "$XDG_CONFIG_HOME"/x11/size
 
 # run the pipe
-lsw | winsize | binpack -x "$width" -y "$heigh" -g "$gaps"
+lsw | winsize | binpack -x "$width" -y "$heigh" -g "$gaps" -s "$screens"
