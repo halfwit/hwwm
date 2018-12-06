@@ -3,10 +3,9 @@
 GITBAR="$XDG_RUNTIME_DIR/statusbar/git"
 
 append() {
-	case "$1" in
-		0) 							   ;;
-		[0-9]*) printf '%s\n' "$1$2" ;;
-	esac
+	count="$(echo "$1" | tr -d "[[:space:]]")" 
+	test "$count" -eq 0 && return 
+	printf '%s\n' "$count$2"
 }
 
 stringify() {

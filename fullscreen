@@ -4,8 +4,9 @@
 # toggle the fullscreen state of a window
 # depends on: focus.sh
 
-
-if watom `lsw -r` FS | xargs -n 5 wtp; then
+FS=$(xprop -root | awk '/FS/{print $3, $4, $5, $6, $7}' | sed 's/\"//g')
+if test ${#FS} -gt 0; then
+	wtp "$FS"
 	xprop -root -remove FS
 	/usr/local/share/hwwm/wshuf
 else
