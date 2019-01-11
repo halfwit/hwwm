@@ -9,6 +9,8 @@ OTHER = \
 	gitbar \
 	groups \
 	groupsbar \
+	doublebinpack \
+	triplebinpack \
 	stack \
 	wshuf
 

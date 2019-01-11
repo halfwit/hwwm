@@ -1,0 +1,26 @@
+#!/bin/sh
+# Read in each window, sort into two groups and push through binpack
+flag=0
+first=""
+second=""
+while read -r line; do
+	case $flag in
+	0) flag=1
+		first="$first $line" ;;
+	1) flag=0
+		second="$second $line" ;;
+	esac
+done
+width=$1; width=$((width / 2))
+heigh=$2
+gap=$3
+offset=$1; offset=$(($((offset / 2)) + $((gap * 2))))
+
+split() {
+	while read -r minw maxw minh maxh id; do
+		printf "%s %s %s %s %s\n" $minw $maxw $minh $maxh $id
+	done
+}
+
+echo "$first" | split | binpack -x "$width" -y "$heigh" -g "$gap"
+echo "$second" | split | binpack -x "$width" -y "$heigh" -g "$gap" | awk '{print $1 + "'"$offset"'", $2, $3, $4, $5}'

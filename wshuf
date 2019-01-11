@@ -9,6 +9,7 @@ WIN="$XDG_CONFIG_HOME"/x11/window
 
 winsize() {
 	while read -r id; do
+		xprop -id "$id" | grep -q drawterm && continue 
 		name="`xprop -id "$id" | awk '/WM_CLASS/{print $NF}' | tr -d '"' `" 
 		cmd="`awk -v r="$name" '$0 ~ r {err=1; $1=""; print} END {exit err}' "$WIN" && awk '/default/{$1=""; print}' "$WIN"`"
 		printf '%s %s\n' "`eval "$cmd"`" "$id"
@@ -21,6 +22,8 @@ watom `lsw -r` FS >/dev/null 2>&1 && exit 0
 
 # window dimensions and gap
 . "$XDG_CONFIG_HOME"/x11/size
-
-# run the pipe
-lsw | winsize | binpack -x "$width" -y "$heigh" -g "$gaps" -s "$screens"
+case $screens in
+3) lsw | winsize | /usr/local/share/hwwm/triplebinpack "$width" "$heigh" "$gaps" ;;
+2) lsw | winsize | /usr/local/share/hwwm/doublebinpack "$width" "$heigh" "$gaps" ;;
+*) lsw | winsize | binpack -x "$width" -y "$heigh" -g "$gaps" ;;
+esac

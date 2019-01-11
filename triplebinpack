@@ -1,0 +1,99 @@
+#!/bin/sh
+# If initial binpack fails, remove second largest window into seperate grouping, and try again.
+
+width=$1; width=$((width / 3))
+offset=$1; offset=$((offset / 3))
+doubleoffset=$(($((offset * 2)) + $((gap * 3))))
+offset=$((offset + $((gap * 3))))
+heigh=$2
+gap=$3
+
+# We center around second monitor.
+first=""
+second=""
+third=""
+
+# stash our data
+while read -r input; do
+	second="$input $second"
+done
+
+# Check if we have more than one window
+windows=$(echo "$second" | wc -w); windows=$((windows / 5))
+
+if [ $windows -eq 1 ]; then
+	echo "$second" | binpack -x "$width" -y "$heigh" -g "$gap" | awk '{print $1 + "'"$offset"'", $2, $3, $4, $5}'
+	exit
+fi
+
+matchy() {
+	awk '{
+		for(i=1;i<=NF;i++) {
+			if($i == "'"$1"'") {
+				print $(i-4) OFS $(i-3) OFS $(i-2) OFS $(i-1) OFS $i
+			}
+		}
+	}' 
+}
+
+grok() {
+	first=0
+	second=0
+	firstid=""
+	secondid=""
+	while read -r minw minh maxw maxh id; do
+		max=$((maxw * maxh))
+		if test "$max" -gt "$first"; then	
+			# New top window 
+			second="$first"
+			first="$max"
+			# Stash the ID 
+			secondid="$firstid"
+			firstid="$id"
+			continue
+		fi
+		if test "$max" -gt "$second"; then 
+			second="$max"
+			secondid=$id
+		fi
+	done
+	echo "$secondid"
+}
+
+split() {
+	while read -r minw minh maxw maxh id; do
+		printf "%s %s %s %s %s\n" $minw $minh $maxw $maxh $id
+	done
+}
+
+flag=0
+while :; do
+	# Capture remaining amount of windows
+	windows=$(echo "$second" | wc -w); windows=$((windows / 5 )) 
+	# Exit when we're on the last window
+	if [ $windows -eq 1 ]; then
+		break
+	fi
+
+	# simplepack fails or succeeds
+	if echo "$second" | split | simplepack -x "$width" -y "$heigh" -g "$gap"; then
+		break
+	fi
+	# Grab the second biggest window, push it to one of the flanking windows 
+	ID=$(echo "$second" | split | grok )
+	toflank="$(echo "$second" | matchy $ID)"
+ 	second="$(echo "$second" | sed 's/'"$toflank"'//')" 
+	
+	# Use ID to match input string 	
+	case $flag in
+	0) flag=1
+		first="$toflank $first" ;;
+	1) flag=0
+		third="$toflank $third" ;;
+	esac
+done
+
+test "$first" != "" && echo "$first" | split | binpack -x "$width" -y "$heigh" -g "$gap"
+echo "$second" | split | binpack -x "$width" -y "$heigh" -g "$gap" | awk '{print $1 + "'"$offset"'", $2, $3, $4, $5}'
+test "$third" != "" && echo "$third" | split | binpack -x "$width" -y "$heigh" -g "$gap" | awk '{print $1 + "'"$doubleoffset"'", $2, $3, $4, $5}'
+
