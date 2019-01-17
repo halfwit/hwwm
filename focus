@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# Read in current focused window
+current=`pfw`
+cx=`wattr x $current`
+cy=`wattr y $current`
+cw=`wattr w $current`
+ch=`wattr h $current`
+mx=$((cx + $((cw / 2))))
+my=$((cy + $((ch / 2))))
+distance=99999
+focus=0
+
+euclidistance() {
+	echo "sqrt(($mx - $1)^2+($my - $2)^2)" | bc
+	
+}
+
+focus=$current
+lsw | xargs wattr xywhi | while read -r x y w h id; do 
+	test $id = $current && continue
+	no=0
+	case $1 in
+	left)	test $x -gt $((cx - 1)) && no=1 ;;
+	down)	test $((y + h)) -lt $((my + 1)) && no=1 ;;
+	# If right side current is further than left edge of window  
+	right)	test $((mx + mw + 1)) -gt $x && no=1 ;;
+	up)	test $((y + h)) -gt $((my - 1)) && no=1 ;;
+	*)      echo Please use up, down, left, right
+		break ;;
+	esac
+	test $no = 1 && continue
+	here=`euclidistance $((x + $((w / 2)))) $((y + $((h / 2))))`
+	test $here -gt $distance && continue
+	focus=$id
+	distance=$here
+	echo "$id"
+done | tail -n 1 | xargs wtf
+

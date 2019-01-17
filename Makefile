@@ -6,6 +6,7 @@ PREFIX ?= /usr/local
 OTHER = \
 	autotag \
 	fullscreen \
+	focus \
 	gitbar \
 	groups \
 	groupsbar \
