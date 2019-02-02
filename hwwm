@@ -5,8 +5,6 @@ DIR=/usr/local/share/hwwm
 # Update the database
 xrdb -merge "$XDG_CONFIG_HOME"/x11/Xresources
 
-# Set background image
-hsetroot -solid $(xrdb -query | awk '/desktop/{print $NF}')
 
 # Key watcher
 sxhkd -m -1 &
@@ -16,18 +14,22 @@ updatecommit &
 inotifybar &
 
 # Colors
-highlight="$(xrdb -query | awk '/color12/{print $NF}' | sed 's/#//')"
-
-normal="$(xrdb -query | awk '/color4/{print $NF}' | sed 's/#//')"
+highlight="$(xrdb -query | awk '/color4/{print $NF}' | sed 's/#//')"
+background="$(xrdb -query | awk '/background/{print $NF}' | sed 's/#//')"
+normal="$(xrdb -query | awk '/color7/{print $NF}' | sed 's/#//')"
 
 FOCUS_MASK=2097152
 wew -m $FOCUS_MASK | while read -r ev; do
 	wid=`echo "$ev" | sed 's/.*://'`
 	# Short circuit on statusbar, some other types
-	xprop -id $wid | grep -q -e TRANSIENT -e TYPE_MENU -e TYPE_DOCK -e drawterm && continue
+	xprop -id $wid | grep -q -e TRANSIENT -e TYPE_MENU -e TYPE_DOCK && continue
 	fullscreen="$(watom `lsw -r` FS 2>/dev/null)"
 	case "$ev" in
-	# Unmap
+	# Focus in
+	9*)	chwb -s 2 -c "$highlight" "$wid" ;;
+	# Focus out
+	10*)	chwb -s 2 -c "$normal" "$wid" ;; 
+# Unmap
 	18*)	if test -z $fullscreen; then 
 			$DIR/wshuf | xargs -n 5 wtp
 		fi

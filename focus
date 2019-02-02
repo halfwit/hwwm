@@ -36,4 +36,3 @@ lsw | xargs wattr xywhi | while read -r x y w h id; do
 	distance=$here
 	echo "$id"
 done | tail -n 1 | xargs wtf
-
