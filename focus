@@ -13,7 +13,6 @@ focus=0
 
 euclidistance() {
 	echo "sqrt(($mx - $1)^2+($my - $2)^2)" | bc
-	
 }
 
 focus=$current

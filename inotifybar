@@ -29,7 +29,7 @@ barrun() {
 			# We explicitely need to force a redraw here, since we ignore
 			/usr/local/share/hwwm/wshuf | xargs -n 5 wtp
 		fi
-	done | lemonbar -F '#000000' -d -b -f "DejaVu Book:size=10.5" -f "Symbola:size=9.5" -f "FreeSans:size=9.5" -g +1920
+	done | lemonbar -B '#787878' -F '#000000' -d -b -f "DejaVu Book:size=10.5" -f "Symbola:size=9.5" -f "FreeSans:size=9.5" 
 }
 
 barrun
