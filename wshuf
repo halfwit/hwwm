@@ -23,6 +23,7 @@ watom `lsw -r` FS >/dev/null 2>&1 && exit 0
 # window dimensions and gap
 . "$XDG_CONFIG_HOME"/x11/size
 case $screens in
+work) lsw | winsize | /usr/local/share/hwwm/work "$width" "$heigh" "$gaps" ;;
 3) lsw | winsize | /usr/local/share/hwwm/triplebinpack "$width" "$heigh" "$gaps" ;;
 2) lsw | winsize | /usr/local/share/hwwm/doublebinpack "$width" "$heigh" "$gaps" ;;
 *) lsw | winsize | binpack -x "$width" -y "$heigh" -g "$gaps" ;;

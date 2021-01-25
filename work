@@ -1,0 +1,23 @@
+#!/bin/sh
+
+width=$1; 
+heigh=$2
+gap=$3
+
+split() {
+	while read -r minw maxw minh maxh id; do
+	
+		case "$(xprop -id $id | awk '/WM_GROUP/ {print $NF}')" in
+		*7*)
+			continue ;;
+		*)
+			printf "%s %s %s %s %s\n" $minw $maxw $minh $maxh $id 
+		esac
+	done
+}
+
+split | binpack -x "$width" -y "$heigh" -g "$gaps"  
+lsgrp 7 | while read -r id; do
+	wtp $((1920 + gap)) $gap $((1080 - gap - gap)) $((1920 - gap - gap)) $id
+	break
+done
