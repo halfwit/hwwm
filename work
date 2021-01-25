@@ -16,8 +16,8 @@ split() {
 	done
 }
 
-split | binpack -x "$width" -y "$heigh" -g "$gaps"  
+split | binpack -x "$width" -y "$heigh" -g "$gap"  
 lsgrp 7 | while read -r id; do
-	wtp $((1920 + gap)) $gap $((1080 - gap - gap)) $((1920 - gap - gap)) $id
+	wtp $((1920 + gap)) $gap $((1080 - gap * 3 )) $((1920 - gap * 3)) $id
 	break
 done
