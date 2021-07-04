@@ -6,7 +6,7 @@
 
 FS=$(xprop -root | awk '/FS/{print $3, $4, $5, $6, $7}' | sed 's/\"//g')
 if test ${#FS} -gt 0; then
-	wtp "$FS"
+	echo "$FS" | xe -N5 -s 'wtp $1 $2 $3 $4 $5'
 	xprop -root -remove FS
 	/usr/local/share/hwwm/wshuf
 else
